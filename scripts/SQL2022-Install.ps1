@@ -12,16 +12,16 @@
 .NOTES
    ===========================================================================
    Created on:   	2024-03-01
-   Created by:   	dave.rodriguez@dliflc.edu
+   Created by:   	dave@dbsecops.com
    Organization: 	DCSIT DevOps
    Filename: 		1.0 - SQL2022-Install.ps1
    Modified on:   	2024-04-19
-   Modified by:   	dave.rodriguez@dliflc.edu
+   Modified by:   	dave@dbsecops.com
    Description:   	Added option to install localy or remotely. 
    ==========================================================================
    Filename: 		1.1 - SQL2022-Install.ps1
    Modified on:   	2024-06-08
-   Modified by:   	dave.rodriguez@dliflc.edu
+   Modified by:   	dave@dbsecops.com
    Description:   	Ommit SA password set and option, Add Integration Service
    ===========================================================================
 .COMPONENT
@@ -116,7 +116,7 @@ IF ($principalContext.ValidateCredentials('svc.sql.mssql.ssis', $sqlssis)) {
 		write-Output "Incorrect svc.sql.mssql.ssis password."
 	}
 #
-$filepath = "1.1 - SQL2022-Install-Config-prd.ini"
+$filepath = "SQL2022-Install-Config-prd.ini"
 # 
 write-output "-------------------------------------------"
 write-output "Taget Server:$serv"
@@ -140,14 +140,12 @@ if (($continue -eq 'n') -or ($continue -eq 'no')) {
 # Copy-Item -Path $filepath -Destination "C:\temp\" -verbose
 
 #change this to the location of your configuration file
-# 240608 Ommit /SAPWD 
-#  $command = "E:\setup.exe /Q /IAcceptSQLServerLicenseTerms /IAcceptSQLServerLicenseTerms " + "/SAPWD=""" + $sysadmin + """ /SQLSVCPASSWORD=""" + $sqlinst + """ /AGTSVCPASSWORD=""" + $sqlagt + """ /ConfigurationFile=""" + "C:\Temp\" + $filepath + """ /INDICATEPROGRESS"
 $command = "E:\setup.exe /Q /IAcceptSQLServerLicenseTerms /IAcceptSQLServerLicenseTerms " + " /SQLSVCPASSWORD=""" + $sqlinst + """ /AGTSVCPASSWORD=""" + $sqlagt + """ /ISSVCPASSWORD=""" + $sqlssis + """ /ConfigurationFile=""" + "C:\Temp\" + $filepath + """ /INDICATEPROGRESS"
 $command = "'" + $command + "'"
 #$sysinfo = Get-WmiObject -Class Win32_ComputerSystem -ComputerName $serv
 Write-Output $command
 
-Invoke-Command -Session $s -Scriptblock {start-process -filepath E:\setup.exe -arguementlist $command -wait -verbose} 
+Invoke-Command -Session $s -Scriptblock {start-process -filepath E:\setup.exe -ArgumentList $command -wait -verbose} 
 
 Invoke-command -Session $s -Scriptblock {notepad.exe}
 

@@ -26,7 +26,7 @@ DECLARE @sqlserver varchar(20);
 
 -- SET TO SQL SERVER you would like to pull settings from. 
 
-SET @sqlserver = 'PRESCIO330DB154';
+SET @sqlserver = 'WIN22SRVSQL1';
 
 use master 
 go 
@@ -57,11 +57,11 @@ go
 	    --CREATE Account [STAGCIO330DB154] 
 	    EXECUTE msdb.dbo.sysmail_add_account_sp 
 	    @account_name            = UCASE(SELECT @sqlserver), 
-	    @email_address           = LCASE(SELECT @sqlserver + '@dliflc.edu'), 
-	    @display_name            = LCASE(SELECT @sqlserver + '@dliflc.edu'), 
-	    @replyto_address         = LCASE(SELECT @sqlserver + '@dliflc.edu'), 
+	    @email_address           = LCASE(SELECT @sqlserver + '@domain.com'), 
+	    @display_name            = LCASE(SELECT @sqlserver + '@domain.com'), 
+	    @replyto_address         = LCASE(SELECT @sqlserver + '@domain.com'), 
 	    @description             = '', 
-	    @mailserver_name         = 'STAGCIO330EX030', 
+	    @mailserver_name         = 'MAIL.DOMAIN.COM', 
 	    @mailserver_type         = 'SMTP', 
 	    @port                    = '25', 
 	    @username                =  NULL , 
